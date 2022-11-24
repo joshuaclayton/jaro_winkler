@@ -1,0 +1,16 @@
+[package]
+name = "jaro_winkler"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+
+[dependencies]
+
+[dev-dependencies]
+criterion = "0.4.0"
+eddie = "0.4.2"
+strsim = "0.10.0"
+
+[[bench]]
+name = "bench"
+harness = false
