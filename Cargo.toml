@@ -2,6 +2,9 @@
 name = "jaro_winkler"
 version = "0.1.0"
 edition = "2021"
+repository = "https://github.com/joshuaclayton/jaro_winkler"
+authors = ["Joshua Clayton <joshua.clayton@gmail.com>"]
+categories = ["jaro-winkler", "string", "distance", "similarity"]
 license = "MIT"
 
 [dependencies]
