@@ -5,9 +5,18 @@ A fast implementation of [Jaro-Winkler distance] comparing two
 
 [Jaro-Winkler distance]: https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance
 
+## Usage
+
+Add `jaro_winkler` to your `Cargo.toml`:
+
+```toml
+[dependencies]
+jaro_winkler = "0.1.0"
+```
+
 ## Benchmarks
 
-See [benches/bench.rs].
+See [benches/bench.rs](benches/bench.rs).
 
 Comparing different lengths results in different execution times.
 

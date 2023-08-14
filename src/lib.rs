@@ -1,3 +1,17 @@
+#![deny(missing_docs)]
+
+//! `jaro_winkler` is a crate for calculating Jaro-Winkler distance of two strings.
+//!
+//! # Examples
+//!
+//! ```
+//! use jaro_winkler::jaro_winkler;
+//!
+//! assert_eq!(jaro_winkler("martha", "marhta"), 0.9611111111111111);
+//! assert_eq!(jaro_winkler("", "words"), 0.0);
+//! assert_eq!(jaro_winkler("same", "same"), 1.0);
+//! ```
+
 enum DataWrapper {
     Vec(Vec<bool>),
     Bitwise(u128),
@@ -29,6 +43,9 @@ impl DataWrapper {
     }
 }
 
+/// Calculates the Jaro-Winkler distance of two strings.
+///
+/// The return value is between 0.0 and 1.0, where 1.0 means the strings are equal.
 pub fn jaro_winkler(left_: &str, right_: &str) -> f64 {
     let llen = left_.len();
     let rlen = right_.len();
