@@ -1,7 +1,7 @@
 [package]
 name = "jaro_winkler"
-version = "0.1.0"
-edition = "2021"
+version = "0.2.0"
+edition = "2024"
 repository = "https://github.com/joshuaclayton/jaro_winkler"
 authors = ["Joshua Clayton <joshua.clayton@gmail.com>"]
 categories = ["jaro-winkler", "string", "distance", "similarity"]
@@ -11,9 +11,9 @@ license = "MIT"
 [dependencies]
 
 [dev-dependencies]
-criterion = "0.4.0"
-eddie = "0.4.2"
-strsim = "0.10.0"
+criterion = "0.8"
+eddie = "0.4"
+strsim = "0.11"
 
 [[bench]]
 name = "bench"
