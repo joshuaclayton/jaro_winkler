@@ -4,7 +4,8 @@ version = "0.2.0"
 edition = "2024"
 repository = "https://github.com/joshuaclayton/jaro_winkler"
 authors = ["Joshua Clayton <joshua.clayton@gmail.com>"]
-categories = ["jaro-winkler", "string", "distance", "similarity"]
+categories = ["algorithms", "text-processing"]
+keywords = ["jaro-winkler", "string", "distance", "similarity"]
 description = "Fast implementation of Jaro-Winkler for comparing two strings"
 license = "MIT"
 

@@ -7,7 +7,7 @@
 //! ```
 //! use jaro_winkler::jaro_winkler;
 //!
-//! assert_eq!(jaro_winkler("martha", "marhta"), 0.9611111111111111);
+//! assert_eq!(jaro_winkler("martha", "marhta"), 0.96111107);
 //! assert_eq!(jaro_winkler("", "words"), 0.0);
 //! assert_eq!(jaro_winkler("same", "same"), 1.0);
 //! ```
@@ -15,7 +15,7 @@
 /// Calculates the Jaro-Winkler distance of two strings.
 ///
 /// The return value is between 0.0 and 1.0, where 1.0 means the strings are equal.
-pub fn jaro_winkler(left_: &str, right_: &str) -> f64 {
+pub fn jaro_winkler(left_: &str, right_: &str) -> f32 {
     let llen = left_.len();
     let rlen = right_.len();
 
@@ -48,8 +48,8 @@ pub fn jaro_winkler(left_: &str, right_: &str) -> f64 {
     // no enum dispatch overhead.
     let mut s1m: u128 = 0;
     let mut s2m: u128 = 0;
-    let mut matching: f64 = 0.0;
-    let mut transpositions: f64 = 0.0;
+    let mut matching: f32 = 0.0;
+    let mut transpositions: f32 = 0.0;
 
     for i in 0..s2_len {
         let mut j = i.saturating_sub(range);
@@ -114,7 +114,7 @@ fn jaro_winkler_long(
     s1_len: usize,
     s2_len: usize,
     range: usize,
-) -> f64 {
+) -> f32 {
     let s1_words = (s1_len + 63) >> 6;
     let s2_words = (s2_len + 63) >> 6;
 
@@ -126,7 +126,7 @@ fn jaro_winkler_long(
 
     let mut s1m = vec![0u64; s1_words];
     let mut s2m = vec![0u64; s2_words];
-    let mut matching: f64 = 0.0;
+    let mut matching: f32 = 0.0;
 
     for i in 0..s2_len {
         let target = right_as_bytes[i] as usize;
@@ -143,11 +143,7 @@ fn jaro_winkler_long(
             let lo = if w == start_word { j_start & 63 } else { 0 };
             let hi = if w == end_word - 1 {
                 let b = j_end & 63;
-                if b == 0 {
-                    64
-                } else {
-                    b
-                }
+                if b == 0 { 64 } else { b }
             } else {
                 64
             };
@@ -174,7 +170,7 @@ fn jaro_winkler_long(
     }
 
     // Count transpositions
-    let mut transpositions: f64 = 0.0;
+    let mut transpositions: f32 = 0.0;
     let mut l = 0usize;
 
     for i in 0..s2_len - 1 {
@@ -205,15 +201,15 @@ fn jaro_winkler_long(
 }
 
 fn winkler(
-    matching: f64,
-    transpositions: f64,
+    matching: f32,
+    transpositions: f32,
     s1_len: usize,
     s2_len: usize,
     left_as_bytes: &[u8],
     right_as_bytes: &[u8],
-) -> f64 {
-    let jaro = (matching / (s1_len as f64)
-        + matching / (s2_len as f64)
+) -> f32 {
+    let jaro = (matching / (s1_len as f32)
+        + matching / (s2_len as f32)
         + (matching - transpositions) / matching)
         / 3.0;
 
@@ -222,7 +218,7 @@ fn winkler(
         .zip(right_as_bytes)
         .take(4)
         .take_while(|(l, r)| l == r)
-        .count() as f64;
+        .count() as f32;
 
     jaro + prefix_length * 0.1 * (1.0 - jaro)
 }
@@ -248,7 +244,7 @@ mod tests {
 
     #[test]
     fn test_hello() {
-        assert_eq!(jaro_winkler("hell", "hello"), 0.96);
+        assert_eq!(jaro_winkler("hell", "hello"), 0.96_f32);
     }
 
     /// Reference implementation using the standard (non-bit-parallel) algorithm.
@@ -369,7 +365,7 @@ mod tests {
             let optimized = jaro_winkler(a, b);
             let reference = jaro_winkler_reference(a, b);
             assert!(
-                (optimized - reference).abs() < 1e-10,
+                (optimized as f64 - reference).abs() < 1e-6,
                 "Mismatch for ({:?}, {:?}): optimized={}, reference={}",
                 a,
                 b,
@@ -379,7 +375,7 @@ mod tests {
             // Verify order independence
             let optimized_flipped = jaro_winkler(b, a);
             assert!(
-                (optimized_flipped - reference).abs() < 1e-10,
+                (optimized_flipped as f64 - reference).abs() < 1e-6,
                 "Mismatch (flipped) for ({:?}, {:?}): optimized={}, reference={}",
                 b,
                 a,
